@@ -22,4 +22,4 @@ if enviado:
     mostrar_resultado_mensagem(r)
     # Grava no histórico (só acontece se o usuário ligou essa opção).
     if not r.erro:
-        registrar("mensagem", r.nivel, r.pontuacao, [{"descricao": i["nome"], "categoria": i["categoria"]} for i in r.indicadores], texto)
+        registrar("mensagem", r.nivel, r.pontuacao, [{"descricao": i["nome"], "categoria": i["categoria"]} for i in r.indicadores if i["peso"] > 0], texto)

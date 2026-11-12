@@ -95,4 +95,8 @@ class Historico:
         # As 8 categorias de indicador que mais aparecem.
         top_ind = [tuple(r) for r in c.execute(
             "SELECT categoria, COUNT(*) AS n FROM indicadores GROUP BY categoria ORDER BY n DESC LIMIT 8").fetchall()]
-        return {"total": sum(por_tipo.values()), "por_tipo": por_tipo, "por_nivel": por_nivel, "indicadores": top_ind}
+        # Período: quantas análises nos últimos 7 dias e a data da mais antiga guardada.
+        ultimos_7 = c.execute("SELECT COUNT(*) FROM analises WHERE data_analise >= datetime('now', '-7 days')").fetchone()[0]
+        desde = c.execute("SELECT MIN(date(data_analise)) FROM analises").fetchone()[0]
+        return {"total": sum(por_tipo.values()), "por_tipo": por_tipo, "por_nivel": por_nivel, "indicadores": top_ind,
+                "ultimos_7_dias": ultimos_7, "desde": desde}

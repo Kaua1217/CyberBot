@@ -4,8 +4,8 @@
       "id": "phishing",
       "titulo": "O que é phishing",
       "categoria": "phishing",
-      "perguntas": ["o que é phishing", "o que é um link falso", "como saber se um link é falso", "recebi um sms com link", "email falso", "site falso"],
-      "conteudo": "Phishing é quando o golpista se passa por uma empresa ou órgão conhecido para fazer você clicar num link e digitar dados, como senha ou número do cartão.\n\n**Sinais comuns:**\n- Pressa ou ameaça: \"sua conta será bloqueada hoje\".\n- Link com nome parecido com o oficial, como `itau-desbloqueio.com`.\n- Pedido de senha, código ou dados do cartão.\n\n**O que fazer:** não clique. Abra o site oficial digitando o endereço ou use o app oficial."
+      "perguntas": ["o que é phishing", "o que é um link falso", "como saber se um link é falso", "recebi um sms com link", "email falso", "site falso", "como identificar um email de phishing", "como reconhecer phishing", "email suspeito"],
+      "conteudo": "Phishing é quando o golpista se passa por uma empresa ou órgão conhecido para fazer você clicar num link, abrir um anexo ou digitar dados, como senha ou número do cartão.\n\n**Sinais comuns (no e-mail, SMS ou WhatsApp):**\n- **Remetente:** o nome parece oficial, mas o endereço não é (ex.: `suporte@itau-avisos.com`).\n- **Links:** o endereço do link é diferente do site oficial, como `itau-desbloqueio.com`. No computador, pare o mouse em cima do link para ver o destino sem clicar.\n- **Anexos inesperados:** arquivos .zip, .exe, .html ou \"boleto\" que você não pediu.\n- **Pressa ou ameaça:** \"sua conta será bloqueada hoje\".\n- **Pedidos incomuns:** senha, código, dados do cartão ou pagamento.\n\nErros de português podem aparecer, mas **não confie só nisso**: muitos golpes são bem escritos e copiam o visual da empresa.\n\n**O que fazer:** não clique nem abra anexos. Acesse o site oficial digitando o endereço ou use o app oficial."
     },
     {
       "id": "engenharia_social",
@@ -32,28 +32,28 @@
       "id": "senhas",
       "titulo": "Segurança de senhas",
       "categoria": "senhas",
-      "perguntas": ["como criar senha forte", "senha segura", "gerenciador de senhas", "verificação em duas etapas", "autenticação de dois fatores", "2fa"],
-      "conteudo": "- Use frases longas, como `cafe-azul-janela-trem`. Tamanho vale mais que símbolos.\n- Não repita a mesma senha em vários sites.\n- Um gerenciador de senhas guarda tudo com segurança.\n- Ative a verificação em duas etapas no e-mail, no WhatsApp e nas redes sociais.\n- Nenhuma empresa séria pede sua senha por mensagem ou ligação."
+      "perguntas": ["como criar senha forte", "senha segura", "gerenciador de senhas", "verificação em duas etapas", "autenticação de dois fatores", "2fa", "como criar uma senha mais segura"],
+      "conteudo": "- Use frases longas, como `cafe-azul-janela-trem`. Tamanho vale mais que símbolos.\n- Não repita a mesma senha em vários sites.\n- Um gerenciador de senhas guarda tudo com segurança.\n- Ative a verificação em duas etapas (autenticação multifator) no e-mail, no WhatsApp e nas redes sociais.\n- Nenhuma empresa séria pede sua senha por mensagem ou ligação."
     },
     {
       "id": "cliquei_link",
       "titulo": "Cliquei num link suspeito. E agora?",
       "categoria": "resposta",
-      "perguntas": ["cliquei num link suspeito", "cliquei no link", "abri um link falso", "digitei minha senha num site falso", "e agora que cliquei"],
-      "conteudo": "1. Se você **só abriu** o link, feche a página e não baixe nada.\n2. Se **digitou senha**, troque essa senha agora, e em todo site onde usa a mesma.\n3. Se digitou **dados do cartão ou do banco**, ligue para o banco pelo número do cartão e peça o bloqueio.\n4. Ative a verificação em duas etapas.\n5. Se baixou algum arquivo ou app, desinstale e passe um antivírus."
+      "perguntas": ["cliquei num link suspeito", "cliquei no link", "abri um link falso", "digitei minha senha num site falso", "e agora que cliquei", "o que devo fazer se clicar em um link suspeito", "cliquei em um link de golpe"],
+      "conteudo": "1. **Não digite nada** na página e feche-a. Não baixe arquivos.\n2. Se **digitou senha**, troque essa senha agora, e em todo site onde usa a mesma.\n3. Se digitou **dados do cartão ou do banco**, ligue para o banco pelo número atrás do cartão e peça o bloqueio.\n4. Ative a verificação em duas etapas.\n5. Se baixou algum arquivo ou app, desinstale e passe um antivírus; fique atento a comportamentos estranhos no aparelho.\n6. Acompanhe extratos e avisos de login nos próximos dias."
     },
     {
       "id": "cai_golpe",
       "titulo": "Caí num golpe. O que fazer?",
       "categoria": "resposta",
-      "perguntas": ["caí num golpe", "fiz um pix para golpista", "fui vítima de golpe", "como recuperar dinheiro do pix", "mecanismo especial de devolução", "med pix"],
-      "conteudo": "1. **Avise seu banco agora** pelo app ou pelo número atrás do cartão.\n2. **Se foi Pix, peça o MED** (Mecanismo Especial de Devolução) ao seu banco. O pedido pode ser feito em até 80 dias, mas quanto antes melhor.\n3. **Registre boletim de ocorrência**, em muitos estados pela delegacia online.\n4. **Guarde as provas:** prints, número do golpista e comprovantes.\n5. **Confira o Registrato** do Banco Central para ver se abriram contas ou empréstimos no seu nome."
+      "perguntas": ["caí num golpe", "fiz um pix para golpista", "fui vítima de golpe", "como recuperar dinheiro do pix", "mecanismo especial de devolução", "med pix", "o que fazer se transferir dinheiro para um golpista", "mandei dinheiro para golpista", "transferi dinheiro para golpista"],
+      "conteudo": "1. **Avise seu banco agora** pelo app ou pelo número atrás do cartão.\n2. **Se foi Pix, peça o MED** (Mecanismo Especial de Devolução) ao seu banco. O pedido pode ser feito em até 80 dias, mas quanto antes melhor.\n3. **Registre boletim de ocorrência**, em muitos estados pela delegacia online.\n4. **Guarde as provas:** prints da conversa, número ou perfil do golpista, chave Pix e comprovantes.\n5. **Confira o Registrato** do Banco Central para ver se abriram contas ou empréstimos no seu nome.\n6. **Denuncie** o perfil ou número na plataforma usada (WhatsApp, Instagram etc.)."
     },
     {
       "id": "https",
       "titulo": "Cadeado e HTTPS garantem que o site é seguro?",
       "categoria": "links",
-      "perguntas": ["https é seguro", "cadeado no navegador", "site com cadeado é confiável", "o que é https"],
+      "perguntas": ["https é seguro", "cadeado garante que o site é seguro", "cadeado no navegador", "site com cadeado é confiável", "o que é https"],
       "conteudo": "**Não.** O cadeado (HTTPS) só indica que a conexão entre você e o site é criptografada. Ele **não** prova quem é o dono do site. Golpistas conseguem certificados HTTPS de graça.\n\nConfira sempre o **domínio**: o banco Itaú usa `itau.com.br`; `itau-seguranca.com` não é dele."
     },
     {
@@ -83,6 +83,34 @@
       "categoria": "resposta",
       "perguntas": ["onde denunciar golpe", "boletim de ocorrência", "denunciar site falso", "polícia"],
       "conteudo": "- **Seu banco:** sempre o primeiro contato.\n- **Polícia:** boletim de ocorrência na delegacia online do seu estado. Emergência: 190.\n- **Sites e perfis criminosos:** SaferNet (new.safernet.org.br/denuncie).\n- **Problemas com empresas:** consumidor.gov.br ou Procon."
+    },
+    {
+      "id": "banco_pede_senha",
+      "titulo": "O banco pode pedir minha senha?",
+      "categoria": "senhas",
+      "perguntas": ["o banco pode pedir minha senha", "banco pede senha por mensagem", "banco pede senha por telefone", "pediram minha senha", "empresa pedindo senha", "gerente pediu minha senha"],
+      "conteudo": "**Não.** Bancos e empresas sérias **não pedem** sua senha, o código que chegou por SMS, o token ou os dados completos do cartão por mensagem, e-mail ou ligação.\n\n- Não responda e não clique em links da mensagem.\n- Se ficou na dúvida, fale com o banco **pelos canais oficiais**: o app, o site digitado por você ou o número atrás do cartão.\n- Se já passou a senha, troque-a agora e avise o banco."
+    },
+    {
+      "id": "falso_pix",
+      "titulo": "Golpe do falso Pix",
+      "categoria": "pagamentos",
+      "perguntas": ["como funciona o golpe do falso pix", "falso pix", "comprovante de pix falso", "pix agendado falso", "pix enviado por engano", "pediram para devolver um pix"],
+      "conteudo": "O golpe do falso Pix tem várias formas. Alguns exemplos (há outras):\n\n- **Comprovante falso:** o \"comprador\" manda um print editado ou um Pix **agendado** e pede o produto na hora. Confira no **app do banco** se o dinheiro entrou de fato.\n- **Pix \"por engano\":** alguém diz que mandou um Pix errado e pede devolução para **outra** chave. Se o valor caiu mesmo, devolva só pelo botão **Devolver** do próprio app, nunca para outra chave.\n- **Falsa central:** ligam dizendo que há um Pix suspeito e pedem para você fazer outro Pix para \"cancelar\" ou para uma \"conta segura\". Bancos não fazem isso.\n\nNa dúvida, desligue e fale com o banco pelos canais oficiais."
+    },
+    {
+      "id": "codigos_sms",
+      "titulo": "Posso passar o código que chegou por SMS?",
+      "categoria": "senhas",
+      "perguntas": ["é seguro compartilhar códigos recebidos por sms", "posso passar o código do sms", "código de verificação", "pediram o código que chegou", "código de 6 dígitos", "token do banco"],
+      "conteudo": "**Não compartilhe.** Códigos que chegam por SMS, e-mail ou app (de 4 a 8 dígitos) servem para provar que **você** está entrando na conta. Quem tem o código consegue entrar no seu WhatsApp, e-mail ou banco.\n\n- Nenhuma empresa séria pede esse código por mensagem ou ligação.\n- Se alguém pediu dizendo ser suporte, amigo ou parente, é golpe.\n- Se já passou o código, entre no app e encerre outras sessões, troque a senha e ative a verificação em duas etapas."
+    },
+    {
+      "id": "site_confiavel",
+      "titulo": "Como verificar se um site é confiável",
+      "categoria": "links",
+      "perguntas": ["como verificar se um site é confiável", "site é confiável", "como saber se uma loja online é confiável", "loja virtual é golpe"],
+      "conteudo": "- **Domínio exato:** leia o endereço com calma. `magazineluiza.com.br` é diferente de `magazineluiza-ofertas.com`. O que vale é a parte antes do primeiro `/`, lida a partir do fim.\n- **Chegue pelo caminho oficial:** digite o endereço ou use o app oficial, em vez de clicar em link de anúncio ou mensagem.\n- **Reputação:** procure o nome da loja no Reclame Aqui e em notícias; confira CNPJ, endereço e telefone.\n- **Preço bom demais** e só Pix como pagamento são sinais de alerta.\n- **Cadeado/HTTPS não garante nada:** só mostra que a conexão é criptografada. Sites falsos também têm cadeado.\n\nNenhuma verificação dá certeza absoluta; na dúvida, não compre e não digite dados."
     }
   ],
   "questionarios": [

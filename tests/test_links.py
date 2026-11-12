@@ -18,7 +18,7 @@ def test_sites_oficiais_baixo_risco(url):
 @pytest.mark.parametrize("url", [
     "itau-desbloqueio.com/login",        # marca falsa + palavras-isca
     "https://xn--ita-boa.com",           # "itaú.com" em punycode
-    "http://192.168.0.1/banco/login",    # IP no lugar do nome
+    "http://200.98.10.5/banco/login",    # IP público no lugar do nome
     "https://google.com@golpe.xyz",      # @ disfarçando o destino
     "nubank-seguranca.site/token",       # marca falsa + TLD suspeito
 ])

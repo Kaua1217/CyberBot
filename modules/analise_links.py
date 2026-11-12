@@ -7,6 +7,7 @@ Cada característica encontrada vira um "indicador" com um peso. A soma dos
 pesos define o nível: baixo, atenção ou alto risco.
 """
 
+import ipaddress
 import re
 from dataclasses import dataclass, field  # dataclass cria classes simples só com dados
 
@@ -46,13 +47,29 @@ MARCAS = {
     "instagram": {"instagram.com"},
     "magalu": {"magazineluiza.com.br", "magalu.com"},
     "shopee": {"shopee.com.br"},
+    "google": {"google.com", "google.com.br", "googleusercontent.com"},
+    "facebook": {"facebook.com"},
+    "microsoft": {"microsoft.com"},
+    "paypal": {"paypal.com"},
+    "amazon": {"amazon.com", "amazon.com.br"},
+    "apple": {"apple.com"},
 }
+
+# Troca de números por letras parecidas ("leetspeak"): g00gle -> google, 1tau -> itau.
+_LEET = str.maketrans({"0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "8": "b"})
+
+# Termos que imitam banco, entrega ou atendimento quando aparecem num domínio que não é de banco.
+TERMOS_BANCARIOS = {"banco", "bank", "pix", "cartao", "fatura", "conta", "sac", "central", "suporte", "atendimento", "credito", "emprestimo",
+                    "rastreamento", "rastreio", "encomenda", "pacote", "entrega", "fgts", "beneficio", "multa", "taxa"}
+
+# Terminações que indicam que o começo do endereço imita um domínio inteiro (ex.: "google.com.golpe.net").
+_RE_PARECE_DOMINIO = re.compile(r"(^|\.)[a-z0-9-]+\.(com|net|org|gov|edu|br)$")
 
 # Terminações de domínio (TLD) baratas e muito usadas em golpes.
 TLDS_SUSPEITOS = {"xyz", "top", "click", "online", "site", "info", "live", "shop", "buzz", "icu", "cfd", "sbs", "rest", "monster", "zip", "mov"}
 
 # Palavras que aparecem em links de golpe para chamar o clique ou pedir dados.
-PALAVRAS_ISCA = {"login", "verificar", "verificacao", "atualizar", "atualizacao", "seguranca", "desbloqueio", "desbloquear",
+PALAVRAS_ISCA = {"dados", "cadastro", "login", "verificar", "verificacao", "atualizar", "atualizacao", "seguranca", "desbloqueio", "desbloquear",
                  "premio", "resgate", "resgatar", "senha", "token", "regularizar", "confirmar", "bonus"}
 
 # Portas normais da web: nenhuma (padrão), 80 (http) e 443 (https).
@@ -129,10 +146,17 @@ def analisar_link(url: str) -> ResultadoLink:
 
     # 2) Sinais FORTES (peso 4): quase nunca aparecem em sites legítimos.
     if p["eh_ip"]:
-        add("O endereço usa um número IP no lugar de um nome de site.", 4)
+        if ipaddress.ip_address(host.strip("[]")).is_private:
+            # IP de rede local (ex.: o roteador de casa). Aparece em uso legítimo, então pesa menos.
+            add("O endereço usa um número IP de rede local no lugar de um nome de site. Isso aparece em roteadores e "
+                "sistemas internos; sozinho não prova golpe, mas desconfie se veio numa mensagem.", 2)
+        else:
+            add("O endereço usa um número IP no lugar de um nome de site. Sozinho isso não prova golpe, "
+                "mas sites legítimos quase nunca mandam links assim.", 4)
     if p["usuario"]:
         # Ex.: https://google.com@golpe.xyz leva para golpe.xyz, não para o Google.
-        add("Tem um '@' antes do domínio. O navegador ignora o que vem antes dele, o que é usado para disfarçar o destino real.", 4)
+        add(f"Tem um '@' antes do domínio. O navegador ignora o que vem antes dele ('{p['usuario']}'): "
+            f"o destino real é {host}. É um truque para disfarçar o endereço.", 5)
     if "xn--" in host or not p["host_ascii"]:
         visto = _decodificar(host)
         extra = f" Na tela ele aparece como '{visto}'." if visto != host else ""
@@ -140,18 +164,35 @@ def analisar_link(url: str) -> ResultadoLink:
 
     # 3) Link encurtado (peso 2).
     if dominio in ENCURTADORES:
-        add("É um link encurtado: não dá para ver o destino real antes de clicar.", 2)
+        add("É um link encurtado: o destino final não pode ser confirmado sem abrir o link, e o CyberBot não abre links.", 2)
 
     # 4) Marca conhecida fora do domínio oficial (peso 4).
     #    Juntamos o host sem pontos, hífens e acentos para pegar variações como
     #    "itau-seguro", "itau.seguro" ou "itaú".
+    #    Antes disso: o começo do endereço imita um domínio inteiro?
+    #    Ex.: "google.com.login-seguro.net" parece Google, mas o dono é login-seguro.net.
+    prefixo = host[: -len(dominio)].rstrip(".") if not p["eh_ip"] and host != dominio else ""
+    if prefixo and _RE_PARECE_DOMINIO.search(prefixo):
+        add(f"O endereço começa com '{prefixo}', mas o domínio que vale é o do final: {dominio}. "
+            "O começo serve só para enganar quem lê rápido.", 4)
     host_sem_pontuacao = re.sub(r"[^a-z0-9]", "", remover_acentos(_decodificar(host)))
+    oficial = None   # marca cujo domínio oficial é este
     for marca, oficiais in MARCAS.items():
         # É oficial se o host for exatamente o domínio oficial ou um subdomínio dele
         # (ex.: "www.itau.com.br" termina com ".itau.com.br").
-        if marca in host_sem_pontuacao and not any(host == o or host.endswith("." + o) for o in oficiais):
-            add(f"Cita a marca '{marca}', mas o domínio ({dominio}) não é o oficial.", 4)
+        eh_oficial = any(host == o or host.endswith("." + o) for o in oficiais)
+        if eh_oficial:
+            oficial = marca
+            continue
+        if marca in host_sem_pontuacao:
+            if not (prefixo and _RE_PARECE_DOMINIO.search(prefixo)):   # já avisado acima
+                add(f"Cita a marca '{marca}', mas o domínio ({dominio}) não é o oficial.", 4)
             break  # basta uma marca para o alerta
+        if marca in host_sem_pontuacao.translate(_LEET):
+            # Ex.: "g00gle" com zeros no lugar dos "o".
+            add(f"Troca letras por números para imitar a marca '{marca}' (ex.: 0 no lugar de o, 1 no lugar de i). "
+                "O domínio não é o oficial; isso não quer dizer que o site exista ou esteja no ar.", 4)
+            break
 
     # 5) Sinais MÉDIOS e FRACOS: sozinhos não provam nada, mas somam.
     subdominios = len(rotulos_host) - len(dominio.split("."))
@@ -164,6 +205,11 @@ def analisar_link(url: str) -> ResultadoLink:
     punycode = nome.startswith("xn--")     # já foi tratado acima; evita alertas repetidos
     if nome.count("-") >= 2 and not punycode:
         add("O nome do site tem vários hífens, comum em imitações (ex.: banco-seguro-acesso).", 1)
+    termos = sorted(t for t in TERMOS_BANCARIOS if t in nome.replace("-", " ").split() or t in nome.split("-"))
+    if termos and oficial is None and not p["eh_ip"]:
+        # Ex.: "banco-seguranca-login.com" não pertence a nenhum banco conhecido.
+        add(f"O nome do site usa termos de banco, entrega ou atendimento ({', '.join(termos)}), mas não é o domínio de "
+            "nenhum banco, órgão ou empresa conhecida. Domínio não confirmado.", 2)
     if re.search(r"[a-z]\d|\d[a-z]", nome) and not p["eh_ip"] and not punycode:
         # Letra colada em número: "1tau", "g0v", "paypa1"...
         add("Mistura letras e números no nome do site, o que pode imitar uma marca (ex.: 1tau, g0v).", 1)
@@ -175,7 +221,7 @@ def analisar_link(url: str) -> ResultadoLink:
     texto_isca = re.sub(r"[^a-z]", " ", (host + " " + p["caminho"] + " " + p["consulta"]).lower())
     iscas = sorted(PALAVRAS_ISCA.intersection(texto_isca.split()))
     if iscas:
-        add("Contém palavras usadas para atrair cliques ou pedir dados: " + ", ".join(iscas) + ".", 1)
+        add("Contém palavras que costumam aparecer em páginas que pedem dados: " + ", ".join(iscas) + ". Sozinho isso não prova golpe.", 1)
 
     # 6) HTTP x HTTPS.
     if p["esquema_informado"] and p["esquema"] == "http":
@@ -189,5 +235,11 @@ def analisar_link(url: str) -> ResultadoLink:
 
     # 7) Soma os pesos e define o nível.
     pontos = sum(i.peso for i in ind)
+    # Nunca dizer "é seguro": não achar sinais não é garantia.
+    if oficial and not ind:
+        obs.insert(0, f"{dominio} é um domínio oficial conhecido. Mesmo assim, confira o endereço completo "
+                      "e se a página pede algo incomum: não encontrar sinais não garante que é seguro.")
+    elif _nivel(pontos) == "baixo":
+        obs.insert(0, "Não encontrar sinais de alerta não garante que o site é seguro. Confira se o endereço é exatamente o oficial.")
     return ResultadoLink(url=p["original"], host=host, dominio=dominio, nivel=_nivel(pontos),
                          pontuacao=pontos, indicadores=ind, observacoes=obs)
