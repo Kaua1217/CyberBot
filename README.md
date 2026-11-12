@@ -68,3 +68,30 @@ Para melhorar: aumentar a base para 300 a 500 mensagens (com mensagens reais ano
 - Links nunca são acessados (há um teste que garante isso).
 - HTTPS não é tratado como prova de segurança.
 - A análise é indicativa e pode errar. O app sempre orienta confirmar pelo canal oficial.
+
+## Projetos de referência
+
+Estes projetos públicos serviram de inspiração. O código do CyberBot foi escrito do zero; nada foi copiado deles.
+
+| Projeto | O que analisa | Técnica principal | Interface |
+|---|---|---|---|
+| [sanchitdangi/phishing-email-detection](https://github.com/sanchitdangi/phishing-email-detection) | E-mails | TF-IDF + atributos do e-mail; compara Regressão Logística, Naive Bayes, Random Forest e LightGBM; explicação com SHAP | FastAPI e Streamlit |
+| [anujp-0709/phishing-url-detector](https://github.com/anujp-0709/phishing-url-detector) | URLs | Atributos extraídos da URL (tamanho, subdomínios, palavras-chave) com scikit-learn | Streamlit |
+| [alfred-abraham/phishing_detection_capstone](https://github.com/alfred-abraham/phishing_detection_capstone) | E-mails e URLs | Compara cinco modelos; TF-IDF + Random Forest para e-mails | Streamlit |
+| [rocky-2904/NeuroPhish](https://github.com/rocky-2904/NeuroPhish) | E-mails | TF-IDF + regras manuais (urgência, links com IP) com Random Forest | Streamlit |
+| [ARAGALAGOVARDHANREDDY/phishing-url-detection](https://github.com/ARAGALAGOVARDHANREDDY/phishing-url-detection) | URLs e a página | Árvore de decisão com atributos da URL e da página, mais regras de segurança | Streamlit |
+
+### O que o CyberBot aproveita dessas ideias
+
+- **TF-IDF + modelo clássico comparado com outros** (como nos projetos 1, 3 e 4), com Naive Bayes e Regressão Logística.
+- **Modelo + regras explicáveis** (como nos projetos 1, 4 e 5): o usuário vê por que o resultado saiu assim.
+- **Atributos da URL** (como nos projetos 2 e 5): IP, subdomínios, encurtadores, palavras-isca.
+- **Interface em Streamlit**, usada em todos os cinco.
+
+### O que o CyberBot faz diferente
+
+- **Foco no Brasil e em português:** golpes do Pix, falso parente no WhatsApp, falsa central, marcas e órgãos brasileiros. Os cinco projetos trabalham com textos em inglês.
+- **Junta mensagem, link e educação num chat só**, com base educativa e questionário.
+- **Nunca abre o link.** O projeto 5 acessa a página ao vivo; o CyberBot olha só o texto do endereço, por segurança (RNF07).
+- **Privacidade:** histórico desligado por padrão, dados pessoais mascarados e retenção de 30 dias.
+- **Métricas honestas para uma base pequena:** com 177 mensagens o F1 fica em torno de 0,77. Projetos com bases grandes do Kaggle chegam a 96–98%, e um deles relata 100%, que o próprio autor diz valer só para aquela divisão dos dados. Aumentar a base é o próximo passo.
