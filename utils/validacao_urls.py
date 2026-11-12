@@ -12,6 +12,11 @@ from urllib.parse import urlsplit  # biblioteca padrão que separa uma URL em pa
 TAMANHO_MAXIMO_URL = 2048
 # Verifica se o endereço começa com um "esquema", como http:// ou https://
 _RE_ESQUEMA = re.compile(r"^[a-z][a-z0-9+.-]*://", re.I)
+# Esquema sem as barras, como "javascript:" ou "data:". O (?!\d) evita confundir
+# com porta: em "site.com:8080" o que vem depois dos dois-pontos é número.
+_RE_ESQUEMA_SEM_BARRAS = re.compile(r"^([a-z][a-z0-9+.-]*):(?!\d)", re.I)
+# Só endereços web são analisados.
+ESQUEMAS_ACEITOS = {"http", "https"}
 # Um nome de site "normal" só tem letras sem acento, números, pontos e hífens.
 _RE_HOST_VALIDO = re.compile(r"^[a-z0-9.-]+$", re.I)
 
@@ -36,6 +41,12 @@ def normalizar_url(url: str) -> str:
         raise URLInvalida("O endereço é longo demais para ser analisado.")
     if any(c.isspace() for c in url):
         raise URLInvalida("O endereço não pode conter espaços.")
+    # Recusa esquemas que não são web (javascript:, data:, file:, ftp://...).
+    # Eles podem executar código ou abrir arquivos, por isso nunca são aceitos.
+    esquema = _RE_ESQUEMA_SEM_BARRAS.match(url)
+    if esquema and esquema.group(1).lower() not in ESQUEMAS_ACEITOS:
+        raise URLInvalida(f"O esquema '{esquema.group(1).lower()}:' não é um endereço web (http ou https) e não foi analisado. "
+                          "Endereços assim podem executar código ou abrir arquivos: não abra nem clique.")
     if not _RE_ESQUEMA.match(url):
         # Sem "http://" o urlsplit não entende onde está o domínio. Colocamos um
         # provisório só para conseguir separar as partes. Isso NÃO significa que

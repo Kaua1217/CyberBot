@@ -23,6 +23,8 @@ streamlit run app.py
 
 O navegador abre em `http://localhost:8501`. Para rodar os testes: `python -m pytest`.
 
+O resultado do Plano de Testes (46 casos) está em [docs/resultado_plano_de_testes.md](docs/resultado_plano_de_testes.md), e os casos estão automatizados em `tests/test_plano.py`.
+
 ## Estrutura
 
 ```
@@ -49,7 +51,7 @@ docs/relatorio_modelo.md   métricas por classe e matriz de confusão
 ## Como o resultado é calculado
 
 1. O classificador estima a categoria da mensagem (legítima, suspeita ou alto risco).
-2. Regras procuram sinais concretos: pedido de senha ou código, pressa, Pix, taxa antecipada, número novo, acesso remoto etc.
+2. Regras procuram sinais concretos: pedido de senha ou código, pressa, Pix, taxa antecipada, número novo, chamada para clicar, oferta boa demais, contato por número da própria mensagem, acesso remoto etc.
 3. Links dentro da mensagem passam pela análise de links.
 4. O nível final é o **mais alto** entre o modelo e as regras. Assim um golpe com palavras novas ainda é pego pelas regras, e o usuário sempre vê por que chegamos ao resultado.
 
@@ -64,10 +66,11 @@ Para melhorar: aumentar a base para 300 a 500 mensagens (com mensagens reais ano
 ## Privacidade e limitações
 
 - O CyberBot não pede senhas, códigos, dados bancários ou documentos. Se o usuário digitar CPF, cartão ou senha no chat, a entrada é bloqueada e não é analisada nem salva.
-- O histórico só grava se o usuário ativar. Por padrão grava só o resultado, não o texto. O texto só é salvo se o usuário marcar a opção, com números longos e e-mails mascarados e corte em 300 caracteres. Registros com mais de 30 dias são apagados.
-- Links nunca são acessados (há um teste que garante isso).
+- O histórico só grava se o usuário ativar. Com ele ligado, o código anônimo da sessão vai para o endereço da página (`?s=...`), para o usuário reencontrar o histórico depois de recarregar ou reiniciar o app; quem tiver esse endereço vê os resultados daquela sessão. Por padrão grava só o resultado, não o texto. O texto só é salvo se o usuário marcar a opção, com números longos e e-mails mascarados e corte em 300 caracteres. Registros com mais de 30 dias são apagados.
+- Links nunca são acessados (há um teste que garante isso). Endereços que não são http/https, como `javascript:`, são recusados.
 - HTTPS não é tratado como prova de segurança.
 - A análise é indicativa e pode errar. O app sempre orienta confirmar pelo canal oficial.
+- O modelo foi treinado só com mensagens em português. Mensagens em outro idioma recebem um aviso e contam principalmente com as regras.
 
 ## Projetos de referência
 

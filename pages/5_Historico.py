@@ -17,7 +17,9 @@ h = historico()
 # ------------------------- Histórico da sessão (RF09) -------------------------
 st.subheader("Suas análises nesta sessão")
 if not st.session_state.get("salvar_historico"):
-    st.info("O histórico está desligado. Ative em **Salvar histórico desta sessão**, na barra lateral, para guardar os resultados por até 30 dias.")
+    st.info("O histórico está desligado: novas análises **não** são salvas. Ative em **Salvar histórico desta sessão**, "
+            "na barra lateral, para guardar os resultados por até 30 dias. Registros salvos antes continuam aqui até "
+            "você apagá-los ou até completarem 30 dias.")
 itens = h.listar(st.session_state.sessao_id)
 if itens:
     # Monta uma tabela (DataFrame do pandas) com uma linha por análise.
@@ -35,14 +37,17 @@ else:
 
 # ------------------------- Estatísticas gerais (RF10) -------------------------
 st.subheader("Estatísticas gerais")
-st.caption("Números agregados de todos os usuários, sem nenhum texto analisado.")
 est = h.estatisticas()
+periodo = f" desde {est['desde']}" if est["desde"] else ""
+st.caption(f"Números agregados de todos os usuários que ativaram o histórico{periodo} (no máximo 30 dias), "
+           "sem nenhum texto analisado.")
 
-# Três números lado a lado.
-c1, c2, c3 = st.columns(3)
+# Quatro números lado a lado.
+c1, c2, c3, c4 = st.columns(4)
 c1.metric("Análises", est["total"])
 c2.metric("Mensagens", est["por_tipo"].get("mensagem", 0))
 c3.metric("Links", est["por_tipo"].get("link", 0))
+c4.metric("Últimos 7 dias", est["ultimos_7_dias"])
 
 # Gráfico de barras: quantidade por nível de risco, separado por tipo.
 if est["por_nivel"]:

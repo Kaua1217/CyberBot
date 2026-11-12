@@ -5,6 +5,7 @@ MOSTRA os resultados na tela, para que a interface não misture regras de
 negócio com apresentação (seção 5 do planejamento).
 """
 
+import re
 import uuid  # gera identificadores aleatórios (usado para a sessão anônima)
 
 import streamlit as st
@@ -32,8 +33,12 @@ def preparar_app():
     # st.session_state guarda dados enquanto a aba do navegador estiver aberta.
     # Criamos um identificador anônimo para a sessão: assim o histórico funciona
     # sem cadastro e sem coletar nome ou e-mail (seção 8 do planejamento).
+    # Quando o histórico está ligado, o identificador também vai para o endereço
+    # da página (?s=...). Assim, se o app for reiniciado ou a página recarregada
+    # nesse mesmo endereço, o usuário volta a ver as análises que salvou.
     if "sessao_id" not in st.session_state:
-        st.session_state.sessao_id = uuid.uuid4().hex
+        da_url = st.query_params.get("s", "")
+        st.session_state.sessao_id = da_url if re.fullmatch(r"[0-9a-f]{32}", da_url) else uuid.uuid4().hex
 
     with st.sidebar:
         st.markdown("### 🛡️ CyberBot")
@@ -43,8 +48,14 @@ def preparar_app():
                   help="Desligado por padrão. Salva só o resultado da análise, por até 30 dias.")
         # A opção de salvar o texto só aparece se o histórico estiver ligado.
         if st.session_state.get("salvar_historico"):
+            if st.query_params.get("s") != st.session_state.sessao_id:
+                st.query_params["s"] = st.session_state.sessao_id   # guarda a sessão no endereço da página
             st.checkbox("Salvar também o texto analisado", key="salvar_conteudo",
                         help="Números longos (CPF, cartão, telefone) e e-mails são mascarados e o texto é cortado em 300 caracteres.")
+            st.caption("Salvando. Para voltar a este histórico depois, use o mesmo endereço da página.")
+        else:
+            st.caption("Histórico desligado: nada desta sessão é salvo. O que já foi salvo continua na página "
+                       "Histórico até você apagar ou até completar 30 dias.")
         st.divider()
         st.caption("Nunca digite senhas, códigos ou dados do cartão. O CyberBot não pede esses dados.")
 
@@ -71,6 +82,9 @@ def mostrar_resultado_mensagem(r):
         return
     # Título colorido com o nível (ex.: "Alto risco" em vermelho).
     st.markdown(f"#### :{CORES[r.nivel]}[{r.rotulo}]")
+    # Limitações desta análise específica (texto cortado, outro idioma...).
+    for aviso in r.avisos:
+        st.info(aviso)
     # Barra de 0% a 100% com a chance estimada pelo modelo. min/max garantem o intervalo 0..1.
     st.progress(min(max(r.pontuacao, 0.0), 1.0), text=f"Chance estimada pelo modelo de ser golpe: {r.pontuacao:.0%}")
     # RF03: explicar quais indicadores levaram ao resultado.
@@ -78,6 +92,10 @@ def mostrar_resultado_mensagem(r):
         st.markdown("**Por que chegamos a esse resultado:**")
         for i in r.indicadores:
             st.markdown(f"- **{i['nome']}.** {i['explicacao']}")
+    elif r.nivel != "legitima":
+        # Nenhuma regra disparou: o nível veio só do classificador.
+        st.markdown("Nenhuma regra específica disparou, mas o classificador achou a mensagem parecida com golpes "
+                    "da base de treino. Confira pelo canal oficial antes de agir.")
     else:
         st.markdown("Não encontramos os sinais mais comuns de golpe nesta mensagem.")
     # Links encontrados dentro da mensagem aparecem em caixas que abrem e fecham.
