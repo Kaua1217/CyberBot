@@ -34,7 +34,7 @@ O resultado do Plano de Testes (46 casos) está em [docs/resultado_plano_de_test
 
 ## Visual
 
-![Antes e depois da interface](docs/telas/antes_depois.png)
+![Tela do CyberBot analisando uma mensagem](docs/telas/cyberbot.png)
 
 A interface tem identidade própria: fundo cor de papel, verde-petróleo como cor principal, títulos em Fraunces e texto em Figtree, logo e avatares desenhados para o projeto (pasta `assets/`). O resultado de cada análise aparece num cartão com a conclusão em linguagem simples, os sinais encontrados e o que fazer agora. As cores do tema ficam em `.streamlit/config.toml` e o resto do estilo em `assets/estilo.css`.
 
