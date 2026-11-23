@@ -3,15 +3,15 @@
 import streamlit as st
 
 from modules.analise_links import analisar_link
-from utils.interface import mostrar_resultado_link, registrar
+from utils.interface import cabecalho, mostrar_resultado_link, registrar
 
-st.title("Analisar link")
-st.write("Cole um endereço. O CyberBot olha **só o texto do endereço** e nunca abre o site.")
+cabecalho("Checar link", "Antes de clicar, me mostra o link",
+          "Eu leio só o texto do endereço. O site nunca é aberto, então você pode colar sem medo.")
 
 # Formulário: a análise roda só ao apertar o botão.
 with st.form("form_link"):
-    url = st.text_input("Endereço", max_chars=2048, placeholder="Ex.: bit.ly/abc123 ou https://itau-seguranca.com/login")
-    enviado = st.form_submit_button("Analisar", type="primary")
+    url = st.text_input("O link", max_chars=2048, placeholder="Ex.: bit.ly/abc123 ou https://itau-seguranca.com/login")
+    enviado = st.form_submit_button("Checar link", type="primary")
 
 if enviado:
     r = analisar_link(url)
@@ -20,7 +20,7 @@ if enviado:
         registrar("link", r.nivel, r.pontuacao, [{"descricao": i.descricao, "categoria": i.categoria} for i in r.indicadores], url)
 
 # Explicação dos critérios, para o usuário aprender a conferir sozinho.
-with st.expander("O que o CyberBot verifica num link"):
+with st.expander("O que eu olho num link (dá para você conferir sozinho também)"):
     st.markdown("""
 - Número IP no lugar do nome do site
 - `@` antes do domínio, que disfarça o destino
