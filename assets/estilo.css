@@ -1,0 +1,150 @@
+/* Estilo do CyberBot.
+   O tema básico (cores) está em .streamlit/config.toml. Aqui ficam as fontes,
+   os cartões de resultado e os pequenos ajustes que dão a cara do projeto.
+   Fontes: Fraunces (títulos) e Figtree (texto), do Google Fonts. Sem internet,
+   o navegador usa Georgia e a fonte sem serifa do sistema. */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap');
+
+:root {
+  --papel: #F7F3EC;
+  --cartao: #FFFDF9;
+  --areia: #EFE8DC;
+  --linha: #E3DACB;
+  --tinta: #1E2A2B;
+  --tinta-suave: #5E6865;
+  --verde: #1F5F4E;
+  --verde-claro: #E3EEE9;
+  --alto: #A63A2B;
+  --alto-fundo: #F8E7E2;
+  --atencao: #9A6510;
+  --atencao-fundo: #FAEFD9;
+  --baixo: #2F6F4F;
+  --baixo-fundo: #E5F0E8;
+}
+
+/* A fonte vai no app inteiro e é herdada. Não forçamos em todo elemento para
+   não estragar os ícones, que usam uma fonte própria (Material Symbols). */
+.stApp, .stApp p, .stApp li, .stApp label, .stApp input, .stApp textarea, .stApp button {
+  font-family: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+h1, h2, h3, .cb-titulo, .cb-veredito h3 {
+  font-family: 'Fraunces', Georgia, serif !important;
+  letter-spacing: -0.01em;
+  color: var(--tinta);
+}
+.stMarkdown p, .stMarkdown li { line-height: 1.6; }
+
+/* Esconde o botão "Deploy" e o rodapé padrão; o menu da barra lateral continua. */
+.stAppDeployButton, footer { display: none !important; }
+header[data-testid="stHeader"] { background: var(--papel); }
+
+/* Cabeçalho de cada página */
+.cb-cabecalho { margin: 0.25rem 0 1.5rem; }
+.cb-sobrelinha {
+  font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--verde); margin-bottom: 0.35rem;
+}
+.cb-titulo { font-size: 2.3rem; line-height: 1.15; font-weight: 600; margin: 0 0 0.5rem; }
+.cb-lead { color: var(--tinta-suave); font-size: 1.05rem; max-width: 38rem; margin: 0; }
+
+/* Barra lateral */
+section[data-testid="stSidebar"] { border-right: 1px solid var(--linha); }
+.cb-lema { color: var(--tinta-suave); font-size: 0.9rem; margin: -0.25rem 0 1rem; }
+.cb-rodape { font-size: 0.8rem; color: var(--tinta-suave); line-height: 1.5; }
+
+/* Conversa */
+[data-testid="stChatMessage"] { background: transparent; padding: 0.4rem 0; gap: 0.75rem; }
+[data-testid="stChatMessageAvatarImage"] { border-radius: 12px; }
+/* Balão do usuário: cor de areia, como numa conversa de verdade.
+   As mensagens do usuário são as únicas mostradas com st.text, por isso o :has. */
+[data-testid="stChatMessage"]:has([data-testid="stText"]) [data-testid="stChatMessageContent"] {
+  flex: 0 1 auto; width: fit-content; max-width: 100%;
+  background: var(--areia); border-radius: 16px 16px 16px 4px; padding: 0.65rem 0.95rem;
+}
+[data-testid="stChatMessageContent"] pre, [data-testid="stChatMessageContent"] [data-testid="stText"] {
+  white-space: pre-wrap; font-family: inherit; font-size: 0.98rem; background: transparent;
+}
+[data-testid="stChatInput"] textarea { font-size: 1rem; }
+[data-testid="stChatInput"] > div { border-radius: 14px; border-color: var(--linha); background: var(--cartao); }
+
+/* Atalhos de exemplo como "chips" */
+.stButton > button {
+  border-radius: 999px; border: 1px solid var(--linha); background: var(--cartao);
+  color: var(--tinta); font-weight: 500; transition: border-color .15s, background .15s;
+}
+.stButton > button:hover { border-color: var(--verde); color: var(--verde); background: var(--verde-claro); }
+.stButton > button[kind="primary"], .stFormSubmitButton > button {
+  border-radius: 10px; background: var(--verde); color: #fff; border: none; font-weight: 600;
+}
+.stFormSubmitButton > button:hover { background: #174a3d; color: #fff; }
+
+/* Formulários e caixas que abrem e fecham */
+[data-testid="stForm"] { background: var(--cartao); border: 1px solid var(--linha); border-radius: 16px; padding: 1.25rem; }
+[data-testid="stExpander"] details { background: var(--cartao); border: 1px solid var(--linha); border-radius: 12px; }
+[data-testid="stExpander"] summary p { font-weight: 600; }
+
+/* Cartão de resultado */
+.cb-veredito {
+  background: var(--cartao); border: 1px solid var(--linha); border-left: 6px solid var(--cor);
+  border-radius: 14px; padding: 1.1rem 1.25rem 1rem; margin: 0.25rem 0 0.9rem;
+}
+.cb-veredito.alto { --cor: var(--alto); --fundo: var(--alto-fundo); }
+.cb-veredito.atencao { --cor: var(--atencao); --fundo: var(--atencao-fundo); }
+.cb-veredito.baixo { --cor: var(--baixo); --fundo: var(--baixo-fundo); }
+.cb-selo {
+  display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--cor); background: var(--fundo); border-radius: 999px; padding: 0.2rem 0.65rem;
+}
+.cb-veredito h3 { font-size: 1.45rem; margin: 0.55rem 0 0.3rem; padding: 0; line-height: 1.25; }
+.cb-veredito p { margin: 0; color: var(--tinta-suave); }
+.cb-medidor { display: flex; gap: 4px; margin: 0.9rem 0 0.35rem; }
+.cb-medidor span { flex: 1; height: 7px; border-radius: 4px; background: var(--areia); }
+.cb-medidor span.on { background: var(--cor); }
+.cb-medidor-legenda { font-size: 0.82rem; color: var(--tinta-suave); }
+
+.cb-secao { font-weight: 700; font-size: 0.95rem; margin: 1rem 0 0.45rem; color: var(--tinta); }
+ul.cb-sinais { list-style: none; padding: 0; margin: 0; }
+ul.cb-sinais li {
+  display: flex; gap: 0.7rem; padding: 0.6rem 0; border-top: 1px solid var(--linha); margin: 0;
+}
+ul.cb-sinais li:first-child { border-top: none; }
+ul.cb-sinais .cb-ponto { flex: 0 0 9px; height: 9px; border-radius: 50%; background: var(--cor, var(--atencao)); margin-top: 0.5rem; }
+ul.cb-sinais b { display: block; font-weight: 600; }
+ul.cb-sinais span.cb-exp { color: var(--tinta-suave); font-size: 0.95rem; }
+
+.cb-conselho {
+  background: var(--verde-claro); border-radius: 12px; padding: 0.85rem 1rem; margin: 0.9rem 0 0.4rem;
+}
+.cb-conselho b { color: var(--verde); }
+.cb-conselho ol { margin: 0.35rem 0 0; padding-left: 1.2rem; }
+.cb-conselho li { margin: 0.15rem 0; }
+.cb-dominio { font-size: 0.9rem; color: var(--tinta-suave); margin-top: 0.6rem; }
+.cb-dominio code { background: var(--areia); color: var(--tinta); border-radius: 6px; padding: 0.1rem 0.4rem; }
+.cb-nota { font-size: 0.82rem; color: var(--tinta-suave); margin: 0.5rem 0 0; line-height: 1.5; }
+
+/* Respostas educativas */
+.cb-resposta-titulo { font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; }
+
+/* Números do histórico */
+[data-testid="stMetric"] { background: var(--cartao); border: 1px solid var(--linha); border-radius: 14px; padding: 0.8rem 1rem; }
+[data-testid="stMetricValue"] { font-family: 'Fraunces', Georgia, serif; }
+
+@media (max-width: 640px) {
+  .cb-titulo { font-size: 1.8rem; }
+  .cb-veredito { padding: 0.95rem 1rem 0.85rem; }
+  .cb-veredito h3 { font-size: 1.25rem; }
+}
+
+/* Textos da barra lateral menores que o texto principal */
+section[data-testid="stSidebar"] p.cb-lema { font-size: 0.92rem !important; }
+section[data-testid="stSidebar"] p.cb-rodape { font-size: 0.8rem !important; }
+.stApp p.cb-nota { font-size: 0.82rem !important; line-height: 1.5; margin-top: 0.45rem; }
+.stApp .cb-medidor-legenda, .stApp .cb-dominio { font-size: 0.85rem; }
+
+/* Caixas de aviso nas cores do projeto, no lugar do azul/amarelo padrão */
+[data-testid="stAlertContainer"] { border-radius: 12px; color: var(--tinta); }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentInfo"]) { background: var(--verde-claro); }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentWarning"]) { background: var(--atencao-fundo); }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentSuccess"]) { background: var(--baixo-fundo); }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentError"]) { background: var(--alto-fundo); }
+[data-testid="stAlertContainer"] p { color: var(--tinta) !important; }

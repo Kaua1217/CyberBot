@@ -20,14 +20,15 @@ from utils.interface import preparar_app
 preparar_app()
 
 # Define o menu. Cada st.Page aponta para um arquivo da pasta pages/.
-# default=True indica a página que abre primeiro.
+# default=True indica a página que abre primeiro. Os ícones são do Material Symbols
+# (biblioteca de ícones que o Streamlit já traz) e url_path é o endereço de cada página.
 paginas = st.navigation([
-    st.Page("pages/0_Conversar.py", title="Conversar", icon="💬", default=True),
-    st.Page("pages/1_Analisar_Mensagem.py", title="Analisar mensagem", icon="✉️"),
-    st.Page("pages/2_Analisar_Link.py", title="Analisar link", icon="🔗"),
-    st.Page("pages/3_Educacao_Digital.py", title="Educação digital", icon="📚"),
-    st.Page("pages/4_Questionarios.py", title="Questionário", icon="❓"),
-    st.Page("pages/5_Historico.py", title="Histórico", icon="📊"),
+    st.Page("pages/0_Conversar.py", title="Conversar", icon=":material/forum:", default=True),
+    st.Page("pages/1_Analisar_Mensagem.py", title="Checar mensagem", icon=":material/sms:", url_path="mensagem"),
+    st.Page("pages/2_Analisar_Link.py", title="Checar link", icon=":material/link:", url_path="link"),
+    st.Page("pages/3_Educacao_Digital.py", title="Aprender sobre golpes", icon=":material/menu_book:", url_path="aprender"),
+    st.Page("pages/4_Questionarios.py", title="Quiz", icon=":material/quiz:", url_path="quiz"),
+    st.Page("pages/5_Historico.py", title="Meu histórico", icon=":material/history:", url_path="historico"),
 ])
 # Executa a página escolhida pelo usuário no menu.
 paginas.run()

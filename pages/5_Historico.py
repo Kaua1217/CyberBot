@@ -3,21 +3,22 @@
 import pandas as pd
 import streamlit as st
 
-from utils.interface import historico
+from utils.interface import cabecalho, historico
 
 # Nome amigável de cada nível. Mensagens e links usam nomes internos diferentes,
 # então juntamos os dois aqui para a tabela e o gráfico ficarem uniformes.
 NOMES_NIVEIS = {"legitima": "Baixo risco", "baixo": "Baixo risco", "suspeita": "Atenção", "atencao": "Atenção",
                 "alto_risco": "Alto risco", "alto": "Alto risco"}
 
-st.title("Histórico e estatísticas")
+cabecalho("Meu histórico", "O que você já conferiu",
+          "Só aparece aqui se você ligar \"Guardar meu histórico\" na barra lateral. Nada de texto, só os resultados.")
 
 h = historico()
 
 # ------------------------- Histórico da sessão (RF09) -------------------------
-st.subheader("Suas análises nesta sessão")
+st.subheader("Suas análises")
 if not st.session_state.get("salvar_historico"):
-    st.info("O histórico está desligado: novas análises **não** são salvas. Ative em **Salvar histórico desta sessão**, "
+    st.info("O histórico está desligado: novas análises **não** são salvas. Ligue em **Guardar meu histórico**, "
             "na barra lateral, para guardar os resultados por até 30 dias. Registros salvos antes continuam aqui até "
             "você apagá-los ou até completarem 30 dias.")
 itens = h.listar(st.session_state.sessao_id)
@@ -33,10 +34,10 @@ if itens:
         h.apagar_sessao(st.session_state.sessao_id)
         st.rerun()
 else:
-    st.caption("Nenhuma análise salva nesta sessão.")
+    st.caption("Nada guardado por enquanto.")
 
 # ------------------------- Estatísticas gerais (RF10) -------------------------
-st.subheader("Estatísticas gerais")
+st.subheader("No geral")
 est = h.estatisticas()
 periodo = f" desde {est['desde']}" if est["desde"] else ""
 st.caption(f"Números agregados de todos os usuários que ativaram o histórico{periodo} (no máximo 30 dias), "
@@ -59,5 +60,5 @@ if est["por_nivel"]:
 
 # Gráfico horizontal com os sinais de alerta mais comuns.
 if est["indicadores"]:
-    st.markdown("**Sinais mais encontrados**")
+    st.markdown("**Sinais que mais aparecem**")
     st.bar_chart(pd.DataFrame(est["indicadores"], columns=["categoria", "quantidade"]), x="categoria", y="quantidade", horizontal=True)

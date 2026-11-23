@@ -1,0 +1,16 @@
+# Tema visual do CyberBot (cores e comportamento da interface).
+[theme]
+base = "light"
+primaryColor = "#1F5F4E"            # verde-petróleo: botões, links e destaques
+backgroundColor = "#F7F3EC"         # fundo cor de papel
+secondaryBackgroundColor = "#EFE8DC" # barra lateral e caixas
+textColor = "#1E2A2B"
+font = "sans serif"
+# Cores dos gráficos da página Meu histórico, na mesma paleta do resto do app.
+chartCategoricalColors = ["#1F5F4E", "#C7811C", "#A63A2B", "#8A6F4D", "#5E8C7A"]
+
+[client]
+toolbarMode = "minimal"   # esconde as opções de desenvolvedor do menu
+
+[browser]
+gatherUsageStats = false  # não envia estatísticas de uso ao Streamlit
