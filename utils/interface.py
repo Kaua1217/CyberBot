@@ -80,7 +80,7 @@ def preparar_app():
                        "página Meu histórico até você apagar ou até completar 30 dias.")
         st.divider()
         st.markdown('<p class="cb-rodape">Eu nunca peço senha, código ou dados do cartão. '
-                    'Se alguém pedir em meu nome, é golpe.<br><br>Projeto acadêmico · feito no Brasil</p>',
+                    'Se alguém pedir em meu nome, é golpe.<br><br>Projeto acadêmico</p>',
                     unsafe_allow_html=True)
 
 
