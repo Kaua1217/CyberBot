@@ -53,7 +53,7 @@ section[data-testid="stSidebar"] { border-right: 1px solid var(--linha); }
 .cb-rodape { font-size: 0.8rem; color: var(--tinta-suave); line-height: 1.5; }
 
 /* Conversa */
-[data-testid="stChatMessage"] { background: transparent; padding: 0.4rem 0; gap: 0.75rem; }
+[data-testid="stChatMessage"] { background: transparent; padding: 0.4rem 0; gap: 0.75rem; scroll-margin-top: 4.5rem; }
 [data-testid="stChatMessageAvatarImage"] { border-radius: 12px; }
 /* Balão do usuário: cor de areia, como numa conversa de verdade.
    As mensagens do usuário são as únicas mostradas com st.text, por isso o :has. */

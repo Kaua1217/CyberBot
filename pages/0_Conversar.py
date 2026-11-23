@@ -9,6 +9,7 @@ O chat decide sozinho o que fazer com o que o usuário escreve:
 import re
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from utils.processamento_texto import TAMANHO_MAXIMO, normalizar
 
@@ -178,6 +179,27 @@ for texto, resp in conversa:
         if resp.get("cortado"):
             st.info(f"Seu texto tinha {resp['cortado']:,} caracteres. Analisei só os primeiros {TAMANHO_MAXIMO:,}.".replace(",", "."))
         mostrar(resp)
+
+# Quando a entrada vem de um botão de exemplo, o Streamlit não rola a página
+# sozinho (ele só faz isso para a caixa de texto). Sem isso a resposta ficava
+# lá embaixo, fora da tela, e parecia que o botão não tinha funcionado.
+# O script roda num quadro invisível e rola até a mensagem que acabou de entrar.
+if escolhido:
+    components.html(
+        f"""<script>
+        // n={len(conversa)}: muda a cada nova mensagem, para o script rodar de novo.
+        const doc = window.parent.document;
+        const rolar = () => {{
+            const msgs = doc.querySelectorAll('[data-testid="stChatMessage"]');
+            // Para na pergunta do usuário (penúltima mensagem), com a resposta logo abaixo.
+            const alvo = msgs[Math.max(msgs.length - 2, 0)];
+            if (alvo) alvo.scrollIntoView({{behavior: "smooth", block: "start"}});
+        }};
+        setTimeout(rolar, 150);
+        setTimeout(rolar, 600);
+        </script>""",
+        height=0,
+    )
 
 if conversa and st.button("Começar de novo"):
     conversa.clear()
