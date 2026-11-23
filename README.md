@@ -7,6 +7,13 @@ Assistente de segurança digital que ajuda a reconhecer golpes. Projeto acadêmi
 - **Responde dúvidas** a partir de uma base educativa revisada, e tem um questionário.
 - **Histórico opcional** em SQLite, desligado por padrão, com estatísticas agregadas.
 
+## Documentos do projeto
+
+- [Especificação](docs/especificacao.md): problema, o CyberBot como agente, ferramentas, requisitos RF01 a RF10 e RNF01 a RNF08.
+- [Viés algorítmico e responsabilidade social](docs/etica_e_vies.md): testes de viés, impactos éticos e próximos passos.
+- [Resultado do Plano de Testes](docs/resultado_plano_de_testes.md): os 46 casos, todos aprovados.
+- [Relatório do modelo](docs/relatorio_modelo.md): métricas por classe e matriz de confusão.
+
 ## Como rodar
 
 Precisa de Python 3.10 ou mais novo.
@@ -53,7 +60,7 @@ data/
 database/                  conexão e criação das tabelas SQLite
 utils/                     pré-processamento de texto, validação de URL e peças da interface
 tests/                     testes automatizados (pytest)
-docs/relatorio_modelo.md   métricas por classe e matriz de confusão
+docs/                      especificação, ética e viés, plano de testes e relatório do modelo
 ```
 
 ## Como o resultado é calculado
